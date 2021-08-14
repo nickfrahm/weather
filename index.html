@@ -12,12 +12,18 @@
 <body>
     <div class="container">
         <h1 class="header">What's it like out there?</h1>
+        <h2 class="location"></h2>
         <div class="weather-info">
-            <p class="temp"><span class="degrees"></span><span class="f-or-c"></span></p>
+            <p class="temp"></p>
+            <p class="type"></p>
         </div>
         <div class="search-container">
-            <input type="text" class="search">
-            <button class="searchBtn btn"></button>
+            <input type="text" class="search" placeholder="Enter a city name..." maxlength="20">
+            <button class="searchBtn btn">Search</button>
+            <div class="unit-btns">
+                <div class="f btn active">Farenheit</div>
+                <div class="C btn">Celsius</div>
+            </div>
         </div>
     </div>
     <script src="index.js"></script>
