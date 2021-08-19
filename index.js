@@ -17,8 +17,15 @@ document
   .querySelectorAll('.btn')
   .forEach((btn) => {
     btn.addEventListener('click', (e) => {
-      if (setUnitState(e)) {
-        getWeather(document.querySelector('.search').value, unitState);
+      const searchCity = document.querySelector('.search').value;
+      const location = document.querySelector('.location').textContent;
+      if (
+        setUnitState(e) ||
+        (!setUnitState(e) &&
+          location !== searchCity.trim() &&
+          searchCity.trim() !== '')
+      ) {
+        getWeather(searchCity.trim() === '' ? location : searchCity, unitState);
       }
     });
   });
@@ -40,8 +47,7 @@ async function getWeather(city, units) {
     const weather = await res.json();
     console.log(weather);
 
-    document.querySelector('.location').textContent =
-      weather.name + ', ' + 'US';
+    document.querySelector('.location').textContent = weather.name;
 
     const temp = document.querySelector('.temp');
     temp.innerHTML =
@@ -51,6 +57,8 @@ async function getWeather(city, units) {
 
     const type = document.querySelector('.type');
     type.textContent = weather.weather[0].main;
+
+    getGIF(city);
   } catch (error) {
     console.log('not a valid city');
   }
@@ -72,4 +80,22 @@ function setUnitState(e) {
   e.target.classList.toggle('active');
 
   return true;
+}
+
+async function getGIF(city) {
+  try {
+    const key = 'y1xUZYJE7UgU9RtMOLQKL1LIamvtWCc9';
+    const url = `https://api.giphy.com/v1/gifs/translate?api_key=${key}&s=${city}`;
+    const res = await fetch(url);
+    if (res.status >= 400 && res.status < 600) {
+      throw new Error('Bad response from server');
+    }
+    const gifData = await res.json();
+    console.log(gifData);
+
+    const img = document.querySelector('.weather-gif');
+    img.src = gifData.data.images.original.url;
+  } catch (error) {
+    console.log('No GIF found.');
+  }
 }
