@@ -55,6 +55,8 @@ body {
     height: 100px;
 }
 
-.gif {
-    width: 85%;
+@media (max-width: 800px) {
+    .weather-gif {
+        max-width: 250px;
+    }
 }
